@@ -185,7 +185,7 @@ void RCSwitch::switchOff(int nAddressCode, int nChannelCode) {
  * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  * @param nChannelCode  Number of the switch itself (1..5)
  */
-void RCSwitch::switchOn(char* sGroup, int nChannel) {
+void RCSwitch::switchOn(const char* sGroup, int nChannel) {
   char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
   this->switchOn(sGroup, code[nChannel]);
 }
@@ -197,7 +197,7 @@ void RCSwitch::switchOn(char* sGroup, int nChannel) {
  * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  * @param nChannelCode  Number of the switch itself (1..5)
  */
-void RCSwitch::switchOff(char* sGroup, int nChannel) {
+void RCSwitch::switchOff(const char* sGroup, int nChannel) {
   char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
   this->switchOff(sGroup, code[nChannel]);
 }
@@ -208,7 +208,7 @@ void RCSwitch::switchOff(char* sGroup, int nChannel) {
  * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  */
-void RCSwitch::switchOn(char* sGroup, char* sDevice) {
+void RCSwitch::switchOn(const char* sGroup, const char* sDevice) {
     this->sendTriState( this->getCodeWordA(sGroup, sDevice, true) );
 }
 
@@ -218,7 +218,7 @@ void RCSwitch::switchOn(char* sGroup, char* sDevice) {
  * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
  */
-void RCSwitch::switchOff(char* sGroup, char* sDevice) {
+void RCSwitch::switchOff(const char* sGroup, const char* sDevice) {
     this->sendTriState( this->getCodeWordA(sGroup, sDevice, false) );
 }
 
@@ -275,7 +275,7 @@ char* RCSwitch::getCodeWordB(int nAddressCode, int nChannelCode, boolean bStatus
  * getCodeWordA(char*, char*)
  *
  */
-char* RCSwitch::getCodeWordA(char* sGroup, char* sDevice, boolean bOn) {
+char* RCSwitch::getCodeWordA(const char* sGroup, const char* sDevice, boolean bOn) {
     static char sDipSwitches[13];
     int i = 0;
     int j = 0;
@@ -427,7 +427,7 @@ char* RCSwitch::getCodeWordD(char sGroup, int nDevice, boolean bStatus){
 /**
  * @param sCodeWord   /^[10FS]*$/  -> see getCodeWord
  */
-void RCSwitch::sendTriState(char* sCodeWord) {
+void RCSwitch::sendTriState(const char* sCodeWord) {
   for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
     int i = 0;
     while (sCodeWord[i] != '\0') {
@@ -452,7 +452,7 @@ void RCSwitch::send(unsigned long Code, unsigned int length) {
   this->send( this->dec2binWzerofill(Code, length) );
 }
 
-void RCSwitch::send(char* sCodeWord) {
+void RCSwitch::send(const char* sCodeWord) {
   for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
     int i = 0;
     while (sCodeWord[i] != '\0') {
